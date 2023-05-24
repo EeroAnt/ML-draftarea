@@ -7,6 +7,18 @@ def logistic(x):
 def relu(x):
     return max(x,0)
 
+def leaky_relu(x):
+    if x > 0:
+        return x
+    else:
+        return 0.1*x
+
+def elu(x):
+    if x > 0:
+        return x
+    else:
+        return (np.exp(x)-1)
+
 def logistic_deriv(x):
     return logistic(x) * (1 - logistic(x))
 
@@ -16,6 +28,18 @@ def relu_deriv(x):
     else:
         return 0
 
+def leaky_relu_deriv(x):
+    if x > 0:
+        return 1
+    else:
+        return 0.1
+
+def elu_deriv(x):
+    if x > 0:
+        return 1
+    else:
+        return np.exp(x)
+    
 LR = 0.1   
 
 I_dim = 3

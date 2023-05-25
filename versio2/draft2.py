@@ -4,23 +4,23 @@ import aktivaatiofunktiot.activation_functions as af
 
 class LM_model:
     #Luodaan neuroverkko. Annetaan parametreja ja tallennetaan piilotetut kerrokset listaan yhteensopivina matriisei
-    def __init__(self, learning_rate, number_of_middle_layer_weight_matrices):
+    def __init__(self, learning_rate, number_of_weight_matrices):
         self.LR = learning_rate
         self.I_dim = int(input("Syötteen dimensio: "))
-        self.middle_layer_weight_matrices = []
-        self.middle_layer_biases = []
-        for i in range(number_of_middle_layer_weight_matrices):
+        self.weight_matrices = []
+        self.biases = []
+        for i in range(number_of_weight_matrices):
             dim = int(input("Seuraavan kerroksen dimensio: "))
             if i == 0:
-                self.middle_layer_weight_matrices.append(np.random.uniform(-1, 1, (dim, self.I_dim)))
+                self.weight_matrices.append(np.random.uniform(-1, 1, (dim, self.I_dim)))
                 prev_dim = dim
             else:
-                self.middle_layer_weight_matrices.append(np.random.uniform(-1, 1, (dim, prev_dim)))
+                self.weight_matrices.append(np.random.uniform(-1, 1, (dim, prev_dim)))
                 prev_dim = dim
-            self.middle_layer_biases.append(np.random.uniform(-1,1, (dim,1)))
+            self.biases.append(np.random.uniform(-1,1, (dim,1)))
         self.O_dim = int(input("Tulosteen dimensio: "))
-        self.middle_to_output_weight_matrix = np.random.uniform(-1, 1, (self.O_dim,prev_dim))
-        self.middle_to_output_bias = np.random.uniform(-1, 1, (self.O_dim,1))
+        self.weight_matrices.append(np.random.uniform(-1, 1, (self.O_dim,prev_dim)))
+        self.biases.append(np.random.uniform(-1, 1, (self.O_dim,1)))
         self.activation_function_selection()
     
 
@@ -68,21 +68,17 @@ class LM_model:
         self.data_count = len(self.data)
     #syöte läpi verkosta
     def input(self, input):
-        for layer in range(len(self.middle_layer_weight_matrices)):
+        for layer in range(len(self.weight_matrices)):
             if layer == 0:
-                preActivation = np.matmul(self.middle_layer_weight_matrices[layer],input)+self.middle_layer_biases[layer]
+                preActivation = np.matmul(self.weight_matrices[layer],input)+self.biases[layer]
                 postActivation = []
                 for i in preActivation:
                     postActivation.append(self.activation_function(np.sum(i)))
             else:
-                preActivation = np.matmul(self.middle_layer_weight_matrices[layer],postActivation)+self.middle_layer_biases[layer]
+                preActivation = np.matmul(self.weight_matrices[layer],postActivation)+self.biases[layer]
                 postActivation = []
                 for i in preActivation:
                     postActivation.append(self.activation_function(np.sum(i)))
-        preActivation = np.matmul(self.middle_to_output_weight_matrix, postActivation)+self.middle_to_output_bias
-        postActivation = []
-        for i in preActivation:
-            postActivation.append(self.activation_function(np.sum(i)))
         return postActivation
     #least-squares-loss-funktio:
     def loss_function(self, input, expected_output):

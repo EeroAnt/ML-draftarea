@@ -21,6 +21,37 @@ class LM_model:
         self.O_dim = int(input("Tulosteen dimensio: "))
         self.middle_to_output_weight_matrix = np.random.uniform(-1, 1, (self.O_dim,prev_dim))
         self.middle_to_output_bias = np.random.uniform(-1, 1, (self.O_dim,1))
+        self.activation_function_selection()
+    
+
+    def activation_function_selection(self):
+        print("Vaihtoehdot")
+        print("1: Logistinen")
+        print("2: ReLU")
+        print("3: LReLU")
+        print("4: ELU")
+        self.selection = int(input("Mikä funktio saisi olla? "))
+    
+    def activation_function(self,x)
+        if self.selection == 1:     
+            return af.logistic(x)
+        elif self.selection == 2:
+            return af.relu(x)
+        elif self.selection == 3:
+            return af.leaky_relu(x)
+        elif self.selection == 4:
+            return af.elu(x)
+    
+    def activation_function_deriv(self,x):
+        if self.selection == 1:
+            return af.logistic_deriv(x)
+        elif self.selection == 2:
+            return af.relu_deriv(x)
+        elif self.selection == 3:
+            return af.leaky_relu_deriv(x)
+        elif self.selection == 4:
+            return af.elu_deriv(x)
+
     #data ulos taulukosta
     def get_data(self, name_of_file):
         datatype = input("Is the data training or validation data? [Y/n]: ")
@@ -37,16 +68,16 @@ class LM_model:
                 preActivation = np.matmul(self.middle_layer_weight_matrices[layer],input)+self.middle_layer_biases[layer]
                 postActivation = []
                 for i in preActivation:
-                    postActivation.append(af.elu(np.sum(i)))
+                    postActivation.append(self.activation_function(np.sum(i)))
             else:
                 preActivation = np.matmul(self.middle_layer_weight_matrices[layer],postActivation)+self.middle_layer_biases[layer]
                 postActivation = []
                 for i in preActivation:
-                    postActivation.append(af.elu(np.sum(i)))
+                    postActivation.append(self.activation_function(np.sum(i)))
         preActivation = np.matmul(self.middle_to_output_weight_matrix, postActivation)+self.middle_to_output_bias
         postActivation = []
         for i in preActivation:
-            postActivation.append(af.elu(np.sum(i)))
+            postActivation.append(self.activation_function(np.sum(i)))
         return postActivation
     #least-squares-loss-funktio:
     def loss_function(self, input, expected_output):

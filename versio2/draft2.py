@@ -30,9 +30,10 @@ class LM_model:
         print("2: ReLU")
         print("3: LReLU")
         print("4: ELU")
+        print("5: arctan(x) + x")
         self.selection = int(input("Mikä funktio saisi olla? "))
     
-    def activation_function(self,x)
+    def activation_function(self,x):
         if self.selection == 1:     
             return af.logistic(x)
         elif self.selection == 2:
@@ -41,6 +42,8 @@ class LM_model:
             return af.leaky_relu(x)
         elif self.selection == 4:
             return af.elu(x)
+        elif self.selection == 5:
+            return af.arctanplusone(x)
     
     def activation_function_deriv(self,x):
         if self.selection == 1:
@@ -51,6 +54,8 @@ class LM_model:
             return af.leaky_relu_deriv(x)
         elif self.selection == 4:
             return af.elu_deriv(x)
+        elif self.selection == 5:
+            return af.arctanplusone_deriv(x)
 
     #data ulos taulukosta
     def get_data(self, name_of_file):

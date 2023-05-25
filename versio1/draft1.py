@@ -1,51 +1,13 @@
 import pandas
 import numpy as np
-
-def logistic(x):
-    return 1.0/(1 + np.exp(-x))
-
-def relu(x):
-    return max(x,0)
-
-def leaky_relu(x):
-    if x > 0:
-        return x
-    else:
-        return 0.1*x
-
-def elu(x):
-    if x > 0:
-        return x
-    else:
-        return (np.exp(x)-1)
-
-def logistic_deriv(x):
-    return logistic(x) * (1 - logistic(x))
-
-def relu_deriv(x):
-    if relu(x) > 0:
-        return 1
-    else:
-        return 0
-
-def leaky_relu_deriv(x):
-    if x > 0:
-        return 1
-    else:
-        return 0.1
-
-def elu_deriv(x):
-    if x > 0:
-        return 1
-    else:
-        return np.exp(x)
+import aktivaatiofunktiot.activation_functions as af
     
 LR = 0.1   
 
 I_dim = 3
 H_dim = 10
 
-epoch_count = 20
+epoch_count = 200
 
 #np.random.seed(1)
 weights_ItoH = np.random.uniform(-1, 1, (I_dim, H_dim))
@@ -73,20 +35,20 @@ for epoch in range(epoch_count):
     for sample in range(training_count):
         for node in range(H_dim):
             preActivation_H[node] = np.dot(training_data[sample,:], weights_ItoH[:, node])
-            postActivation_H[node] = logistic(preActivation_H[node])
+            postActivation_H[node] = af.elu(preActivation_H[node])
             
         preActivation_O = np.dot(postActivation_H, weights_HtoO)
-        postActivation_O = logistic(preActivation_O)
+        postActivation_O = af.elu(preActivation_O)
         
         FE = postActivation_O - target_output[sample]
         
         for H_node in range(H_dim):
-            S_error = FE * logistic_deriv(preActivation_O)
+            S_error = FE * af.elu_deriv(preActivation_O)
             gradient_HtoO = S_error * postActivation_H[H_node]
                        
             for I_node in range(I_dim):
                 input_value = training_data[sample, I_node]
-                gradient_ItoH = S_error * weights_HtoO[H_node] * logistic_deriv(preActivation_H[H_node]) * input_value
+                gradient_ItoH = S_error * weights_HtoO[H_node] * af.elu_deriv(preActivation_H[H_node]) * input_value
                 
                 weights_ItoH[I_node, H_node] -= LR * gradient_ItoH
                 
@@ -99,18 +61,18 @@ correct_classification_count = 0
 for sample in range(validation_count):
     for node in range(H_dim):
         preActivation_H[node] = np.dot(validation_data[sample,:], weights_ItoH[:, node])
-        postActivation_H[node] = logistic(preActivation_H[node])
+        postActivation_H[node] = af.elu(preActivation_H[node])
             
     preActivation_O = np.dot(postActivation_H, weights_HtoO)
-    postActivation_O = logistic(preActivation_O)
-        
-    if postActivation_O > 0.5:
-        output = 1
-    else:
-        output = 0
-        
-    if output == validation_output[sample]:
+    postActivation_O = af.elu(preActivation_O)
+    print(postActivation_O,validation_output[sample])
+    if postActivation_O-0.2 > validation_output[sample] and postActivation_O+0.2 < validation_output[sample]:
         correct_classification_count += 1
+    # else:
+    #     output = 0
+        
+    # if output == validation_output[sample]:
+    #     correct_classification_count += 1
 
-print('Percentage of correct classifications:')
+print('Percentage of correct evaluations:')
 print(correct_classification_count*100/validation_count)

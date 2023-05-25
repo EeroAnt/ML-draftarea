@@ -21,7 +21,7 @@ class LM_model:
         self.O_dim = int(input("Tulosteen dimensio: "))
         self.middle_to_output_weight_matrix = np.random.uniform(-1, 1, (self.O_dim,prev_dim))
         self.middle_to_output_bias = np.random.uniform(-1, 1, (self.O_dim,1))
-
+    #data ulos taulukosta
     def get_data(self, name_of_file):
         datatype = input("Is the data training or validation data? [Y/n]: ")
         self.data =pandas.read_excel(name_of_file, engine="odf")
@@ -30,8 +30,8 @@ class LM_model:
             self.data = self.data.drop(['output'],axis=1)
         self.data = np.asarray(self.data)
         self.data_count = len(self.data)
-    
-    def forward_propagation(self, input):
+    #syöte läpi verkosta
+    def input(self, input):
         for layer in range(len(self.middle_layer_weight_matrices)):
             if layer == 0:
                 preActivation = np.matmul(self.middle_layer_weight_matrices[layer],input)+self.middle_layer_biases[layer]
@@ -48,3 +48,10 @@ class LM_model:
         for i in preActivation:
             postActivation.append(af.elu(np.sum(i)))
         return postActivation
+    #least-squares-loss-funktio:
+    def loss_function(self, input, expected_output):
+        output = self.input(input)
+        loss = []
+        for i in range(len(output)):
+            loss.append(output[i]-expected_output[i])
+        return 0.5*np.linalg.norm(loss)**2

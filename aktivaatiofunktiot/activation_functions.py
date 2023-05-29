@@ -18,8 +18,11 @@ def elu(x):
     else:
         return (np.exp(x)-1)
     
-def arctanplusone(x):
-    return np.arctan(x)+x
+def arctan(x):
+    return np.arctan(x)
+
+def id(x):
+    return x
 
 def logistic_deriv(x):
     return logistic(x) * (1 - logistic(x))
@@ -42,5 +45,8 @@ def elu_deriv(x):
     else:
         return np.exp(x)
 
-def arctanplusone_deriv(x):
-    return (x**2+2)/(x**2+1)
+def arctan_deriv(x):
+    return 1/(x**2+1)
+
+def id_deriv(x):
+    return 1

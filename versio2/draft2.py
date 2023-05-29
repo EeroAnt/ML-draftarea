@@ -126,8 +126,8 @@ class LM_model:
         self.bias_derivatives.reverse()
 
     def training(self):
-        data = [[1,1,1]]#self.get_data('randomtestdata.ods')
-        expected_output = [[2,2]]
+        data = self.get_data('randomtestdata.ods')
+        expected_output = 0
         matrix_corrections = []
         bias_corrections = []
         counter = 0

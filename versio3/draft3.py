@@ -31,7 +31,8 @@ class LM_model:
         # print("3: LReLU")
         # print("4: ELU")
         # print("5: arctan(x) + x")
-        self.selection = 1#int(input("Mikä funktio saisi olla? "))
+        # print("6: Identiteetti")
+        self.selection = 5#int(input("Mikä funktio saisi olla? "))
     
     def activation_function(self,x):
         if self.selection == 1:     
@@ -43,7 +44,9 @@ class LM_model:
         elif self.selection == 4:
             return af.elu(x)
         elif self.selection == 5:
-            return af.arctanplusone(x)
+            return af.arctan(x)
+        elif self.selection == 6:
+            return af.id(x)
     
     def activation_function_deriv(self,x):
         if self.selection == 1:
@@ -55,7 +58,9 @@ class LM_model:
         elif self.selection == 4:
             return af.elu_deriv(x)
         elif self.selection == 5:
-            return af.arctanplusone_deriv(x)
+            return af.arctan_deriv(x)
+        elif self.selection == 6:
+            return af.id_deriv(x)
 
     #data ulos taulukosta
     def get_data(self, name_of_file):
@@ -75,11 +80,17 @@ class LM_model:
                 for i in preActivation:
                     postActivation.append(self.activation_function(np.sum(i)))
                 self.postActivations_temp.append(np.array(postActivation))
-            else:
+            elif layer <len(self.weight_matrices)-1:
                 preActivation = np.matmul(self.weight_matrices[layer],postActivation)+self.biases[layer]
                 postActivation = []
                 for i in preActivation:
                     postActivation.append(self.activation_function(np.sum(i)))
+                self.postActivations_temp.append(np.array(postActivation))
+            else:
+                preActivation = np.matmul(self.weight_matrices[layer],postActivation)+self.biases[layer]
+                postActivation = []
+                for i in preActivation:
+                    postActivation.append(self.activation_function(np.sum(i))) #mahdollisesti eri funktio loppuun
                 self.postActivations_temp.append(np.array(postActivation))
         self.postActivations_temp.reverse()
         return postActivation
@@ -145,3 +156,13 @@ class LM_model:
         for i in range(n):
             self.weight_matrices[i] = np.add(self.weight_matrices[i], -1*(self.LR/counter) * matrix_corrections[i])
             self.biases[i] = np.add(self.biases[i], (-1*self.LR/counter) * bias_corrections[i])
+
+    def validation(self,dataset):
+        self.get_data(dataset)
+        amount = len(self.data)
+        hits = 0
+        for i in range(amount):
+            output = self.input(self.data[i])
+            if abs(output[0]-self.output_comparison[i])< 1:
+                    hits += 1
+        print(f"{hits} out of {amount} classified correctly")

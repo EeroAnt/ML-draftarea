@@ -10,17 +10,17 @@ class LM_model:
         self.weight_matrices = []
         self.biases = []
         for i in range(number_of_weight_matrices):
-            dim = 3#int(input("Seuraavan kerroksen dimensio: "))
+            dim = int(input("Seuraavan kerroksen dimensio: "))
             if i == 0:
                 self.weight_matrices.append(np.random.uniform(-1, 1, (dim, self.I_dim)))
                 prev_dim = dim
             else:
                 self.weight_matrices.append(np.random.uniform(-1, 1, (dim, prev_dim)))
                 prev_dim = dim
-            self.biases.append(np.random.uniform(-1,1, (dim,1)))
-        self.O_dim = 2#int(input("Tulosteen dimensio: "))
+            self.biases.append(np.random.uniform(-1,1, (dim,)))
+        self.O_dim = 1#int(input("Tulosteen dimensio: "))
         self.weight_matrices.append(np.random.uniform(-1, 1, (self.O_dim,prev_dim)))
-        self.biases.append(np.random.uniform(-1, 1, (self.O_dim,1)))
+        self.biases.append(np.random.uniform(-1, 1, (self.O_dim,)))
         self.activation_function_selection()
     
 
@@ -74,13 +74,13 @@ class LM_model:
                 postActivation = []
                 for i in preActivation:
                     postActivation.append(self.activation_function(np.sum(i)))
-                self.postActivations_temp.append(postActivation)
+                self.postActivations_temp.append(np.array(postActivation))
             else:
                 preActivation = np.matmul(self.weight_matrices[layer],postActivation)+self.biases[layer]
                 postActivation = []
                 for i in preActivation:
                     postActivation.append(self.activation_function(np.sum(i)))
-                self.postActivations_temp.append(postActivation)
+                self.postActivations_temp.append(np.array(postActivation))
         self.postActivations_temp.reverse()
         return postActivation
     
@@ -89,7 +89,7 @@ class LM_model:
         output = self.input(input)
         loss = []
         for i in range(len(output)):
-            loss.append(output[i]-expected_output[i])
+            loss.append(output[i]-expected_output) #täällä kans 1D
         return 0.5*np.linalg.norm(loss)**2
     
     def activation_func_derivs(self):
@@ -104,7 +104,7 @@ class LM_model:
     def loss_function_deriv(self,expected_output):
         loss_function_deriv = []
         for i in range(len(self.postActivations_temp[0])):
-            loss_function_deriv.append(self.postActivations_temp[0][i]-expected_output[i])
+            loss_function_deriv.append(self.postActivations_temp[0][i]-expected_output) #täällä huomio, että nyt output on 1D
         return loss_function_deriv
 
     def derivation(self,sampledata,expected_output):
@@ -121,13 +121,13 @@ class LM_model:
                 self.matrix_derivatives.append(np.matmul(self.postActivations_temp[i],self.bias_derivatives[i]))
             else:
                 self.bias_derivatives.append(np.matmul(self.bias_derivatives[i-1],np.matmul(self.weight_matrices[n-i],act_fnc_ds[i])))
-                self.matrix_derivatives.append(np.matmul(sampledata,self.bias_derivatives[i]))
+                last_matrix = self.bias_derivatives[i].reshape((len(self.bias_derivatives[i]),1))@sampledata.reshape((1,len(sampledata)))
+                self.matrix_derivatives.append(last_matrix)
         self.matrix_derivatives.reverse()
         self.bias_derivatives.reverse()
 
-    def training(self):
-        data = [[1,1,1]]#self.get_data('randomtestdata.ods')
-        expected_output = [[2,2]]
+    def training(self,dataset):
+        self.get_data(dataset)
         matrix_corrections = []
         bias_corrections = []
         counter = 0
@@ -135,10 +135,10 @@ class LM_model:
         for i in range(n):
             matrix_corrections.append(np.zeros((len(self.weight_matrices[i]),len(self.weight_matrices[i][0]))))
             bias_corrections.append(np.zeros(len(self.biases[i])))
-        for sample in range(len(data)):
+        for sample in range(len(self.data)):
             counter += 1
-            self.input(data[sample])
-            self.derivation(data[sample],expected_output[sample])
+            self.input(self.data[sample])
+            self.derivation(self.data[sample],self.output_comparison[sample])
             for j in range(n):
                 matrix_corrections[j] = np.add(matrix_corrections[j], self.matrix_derivatives[j])
                 bias_corrections[j] = np.add(bias_corrections[j], self.bias_derivatives[j])

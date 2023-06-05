@@ -9,7 +9,7 @@ class LM_model:
         self.weight_matrices = []
         self.biases = []
         for i in range(number_of_weight_matrices):
-            dim = 5#int(input("Seuraavan kerroksen dimensio: "))
+            dim = 8#int(input("Seuraavan kerroksen dimensio: "))
             if i == 0:
                 self.weight_matrices.append(np.random.uniform(-1, 1, (dim, self.I_dim)))
                 prev_dim = dim
@@ -17,7 +17,7 @@ class LM_model:
                 self.weight_matrices.append(np.random.uniform(-1, 1, (dim, prev_dim)))
                 prev_dim = dim
             self.biases.append(np.random.uniform(-1,1, (dim,)))
-        self.O_dim = 1#int(input("Tulosteen dimensio: "))
+        self.O_dim = 1 #int(input("Tulosteen dimensio: "))
         self.weight_matrices.append(np.random.uniform(-1, 1, (self.O_dim,prev_dim)))
         self.biases.append(np.random.uniform(-1, 1, (self.O_dim,)))
         self.activation_function_selection()
@@ -32,7 +32,7 @@ class LM_model:
         print("5: arctan(x)")
         print("6: Linear")
         self.selection = 1#int(input("Mikä funktio saisi olla? "))
-        last = "n"#input("Onko viimeinen funktio sama kuin muut? Y/n: ")
+        last = "Y"#input("Onko viimeinen funktio sama kuin muut? Y/n: ")
         if last != "Y":
             self.last_selection = 6#int(input("Mikä funktio saisi olla? "))
         else:
@@ -70,9 +70,10 @@ class LM_model:
     #data ulos taulukosta
     def get_data(self, name_of_file):
         self.data =pandas.read_excel(name_of_file, engine="odf")
-        self.output_comparison = self.data.output1
+        self.output_comparison = pandas.read_excel(name_of_file, usecols=['output2'], engine="odf")
         self.data = self.data.drop(['output1'],axis=1)
         self.data = self.data.drop(['output2'],axis=1)
+        self.output_comparison = np.asarray(self.output_comparison)
         self.data = np.asarray(self.data)
         self.data_count = len(self.data)
     
@@ -106,8 +107,7 @@ class LM_model:
         output = self.input(input)
         loss = []
         for i in range(len(output)):
-            loss.append(output[i]-expected_output) #täällä kans 1D
-        # loss = np.asarray(loss)
+            loss.append(output[i]-expected_output[i])
         return 0.5*np.linalg.norm(loss)**2
     
     def activation_func_derivs(self):
@@ -126,7 +126,7 @@ class LM_model:
     def loss_function_deriv(self,expected_output):
         loss_function_deriv = []
         for i in range(len(self.postActivations_temp[0])):
-            loss_function_deriv.append(self.postActivations_temp[0][i]-expected_output) #täällä huomio, että nyt output on 1D
+            loss_function_deriv.append(self.postActivations_temp[0][i]-expected_output[i])
         return loss_function_deriv
 
     def derivation(self,sampledata,expected_output):
@@ -150,10 +150,10 @@ class LM_model:
 
     def training(self,dataset,learning_rate):
         self.get_data(dataset)
+        n = len(self.weight_matrices)
         matrix_corrections = []
         bias_corrections = []
         counter = 0
-        n = len(self.weight_matrices)
         for i in range(n):
             matrix_corrections.append(np.zeros((len(self.weight_matrices[i]),len(self.weight_matrices[i][0]))))
             bias_corrections.append(np.zeros(len(self.biases[i])))
@@ -164,16 +164,23 @@ class LM_model:
             for j in range(n):
                 matrix_corrections[j] = np.add(matrix_corrections[j], self.matrix_derivatives[j])
                 bias_corrections[j] = np.add(bias_corrections[j], self.bias_derivatives[j])
-        for i in range(n):
-            self.weight_matrices[i] = np.add(self.weight_matrices[i], -1*(learning_rate/counter) * matrix_corrections[i])
-            self.biases[i] = np.add(self.biases[i], (-1*learning_rate/counter) * bias_corrections[i])
+                if counter == 10:
+                    for i in range(n):
+                        self.weight_matrices[i] = np.add(self.weight_matrices[i], -1*(learning_rate/counter) * matrix_corrections[i])
+                        self.biases[i] = np.add(self.biases[i], (-1*learning_rate/counter) * bias_corrections[i])
+                    matrix_corrections = []
+                    bias_corrections = []
+                    counter = 0
+                    for i in range(n):
+                        matrix_corrections.append(np.zeros((len(self.weight_matrices[i]),len(self.weight_matrices[i][0]))))
+                        bias_corrections.append(np.zeros(len(self.biases[i])))
 
     def validation(self,dataset):
         self.get_data(dataset)
         amount = len(self.data)
         hits = 0
         for i in range(amount):
-            output = self.input(self.data[i])
-            if abs(output[0]-self.output_comparison[i])< 1:
+            loss = self.loss_function(self.data[i],self.output_comparison[i])
+            if loss < 0.3:
                     hits += 1
         print(f"{hits} out of {amount} classified correctly")

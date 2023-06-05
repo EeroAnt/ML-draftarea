@@ -1,3 +1,8 @@
+import warnings
+
+#suppress warnings
+warnings.filterwarnings('ignore')
+
 def logistic(x):
     return 1.0/(1 + np.exp(-x))
 
@@ -21,8 +26,8 @@ def elu(x):
 def arctan(x):
     return np.arctan(x)
 
-def id(x):
-    return x
+def linear(x, a):
+    return a*x
 
 def logistic_deriv(x):
     return logistic(x) * (1 - logistic(x))
@@ -47,6 +52,3 @@ def elu_deriv(x):
 
 def arctan_deriv(x):
     return 1/(x**2+1)
-
-def id_deriv(x):
-    return 1

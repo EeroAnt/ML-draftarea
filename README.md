@@ -1,4 +1,5 @@
 # ML-draftarea
+readme tässä vaiheessa enempi päiväkirja. repolle järkevä rajenne sit joskus
 Luonnoksia potentiaalisista neuroniverkkorakenteista
 Alotetaan alusta oikeilla peleillä
 Löytyy:

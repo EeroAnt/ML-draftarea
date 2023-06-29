@@ -8,8 +8,11 @@ Löytyy:
 Kysymyksiä:
 - mitä dataa inputtiin?
 - mitä dataa outputtiin?
-- jos normalisoidaan testidata niin miten käsitellään oikea data?*
+- miten implementoida puuttuvat datat nolliksi?
 
+TODO:
+- talousdataexcelistä vuodet 2000-2001 uupuu kuntatunnukset
 
-*oikeastaan tähän taisin löytää sen vastauksen minkä odotinkin:
-kun luodaan lopullinen malli, niin otetaan normalisoinnin parametrit (mean ja std) ylös ja normalisoidaan todellinen data samoilla parametreillä
+Huomioita:
+- vuosikatteiden yksikkö on 1000e tällä hetkellä. Tää ois hyvä skaalaa mallikohtaisesti johonkin järkevään missä tulokset esim välillä 0-100
+

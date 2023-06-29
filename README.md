@@ -5,6 +5,7 @@ Alotetaan alusta oikeilla peleillä
 Löytyy:
 - Kirjan esimerkki ja sitä mukaileva mallin alustus
 - sql-tietokanta kuntien väestörakenteista niiltä vuosilta mistä nyt osasin
+- python-scripti, jolla yhdistellä eri vuosien exceleitä samasta datasta. vuosikatteet 2002-2014 yhdistetty
 Kysymyksiä:
 - mitä dataa inputtiin?
 - mitä dataa outputtiin?

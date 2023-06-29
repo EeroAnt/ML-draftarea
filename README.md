@@ -11,7 +11,7 @@ Kysymyksiä:
 - miten implementoida puuttuvat datat nolliksi?
 
 TODO:
-- talousdataexcelistä vuodet 2000-2001 uupuu kuntatunnukset
+- talousdataexceleistä vuosiltat 2000-2001 ja 2015 eteenpäin uupuu kuntatunnukset
 
 Huomioita:
 - vuosikatteiden yksikkö on 1000e tällä hetkellä. Tää ois hyvä skaalaa mallikohtaisesti johonkin järkevään missä tulokset esim välillä 0-100

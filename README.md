@@ -15,7 +15,7 @@ Kysymyksiä:
     - inputissa olisi hyvä mahdollistaa esim. -5 tai -3 vuoden lägi (esim. vuosien 2018-2020 väestörakenteet voivat kaikki olla merkittäviä inputteja vuoden 2021 mallissa)
 - mitä dataa outputtiin?
   -   alkuun tärkein **vuosikate**, mutta myös toimintakate voi olla mielenkiintoinen mallin arvioimiseksi
-- miten implementoida puuttuvat datat nolliksi?
+- miten implementoida puuttuvat datat nolliksi? Tämän pitäisi tapahtua itsekseen, mutta pitää pitää silmällä, ettei kuiteinkin sotke juttuja
 
 TODO:
 - Monta tietokantaa -> yksi tietokanta. Sit niitä voi käsitellä

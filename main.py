@@ -1,8 +1,10 @@
 import entities.models.model as m
 import numpy as np
+import entities.data_prep as data_prep
+import time
 
-# model = m.build_model()
-(train_data,train_targets) = m.prep_data()
+start = time.time()
+(train_data,train_targets) = data_prep.prep_data()
 
 k = 4
 num_val_samples = len(train_data) // 4
@@ -37,7 +39,7 @@ all_scores = []
 
 # tutkitaan epochien määrän merkitystä ja etsitään overfittauksen alkamista:
 
-num_epochs = 500
+num_epochs = 1000
 all_mae_histories = []
 
 for i in range(k):
@@ -69,6 +71,10 @@ average_mae_history = [
 
 # plottausta
 
+finish = time.time()
+
+print(f"Koulutukseen kului {finish-start} sekuntia")
+print(f"Tulosteiden keskiarvo on {sum(train_targets)/len(train_targets)}")
 import matplotlib.pyplot as plt
 
 plt.plot(range(1, len(average_mae_history) + 1), average_mae_history)

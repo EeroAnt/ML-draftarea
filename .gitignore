@@ -4,3 +4,4 @@ entities/models/test*
 backup/*
 __pycache__
 __pycache__*
+.~*

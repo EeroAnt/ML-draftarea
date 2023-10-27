@@ -12,7 +12,7 @@ def read_excel(name):
     return dataframe[5:-35]
 
 def add_to_db(dataframe):
-    db = sqlite3.connect("masterdb.db")
+    db = sqlite3.connect("vuosikate.db")
     db.isolation_level = None
     kuntakoodit = municipality_codes()
     for i in range(5,10820):

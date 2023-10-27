@@ -1,4 +1,6 @@
 talousdata/.*
+you_cant_touch_this_financials/.*
+entities/models/test*
 backup/*
 __pycache__
 __pycache__*

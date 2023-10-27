@@ -2,12 +2,14 @@
 readme tässä vaiheessa enempi päiväkirja. repolle järkevä rajenne sit joskus
 Luonnoksia potentiaalisista neuroniverkkorakenteista
 Alotetaan alusta oikeilla peleillä
-Löytyy:
+## Ajo-ohjeet
+[Miniconda3](https://docs.conda.io/projects/miniconda/en/latest/) tulee asentaa. Minun tarvitsi myös ajaa 'conda init bash' komento, jotta conda osasi toimittaa asioita. Sen jälkeen juurihakemistossa voi ajaa komennon 'conda create --name <ympäristön nimi> --file requirements.txt' jonka jälkeen 'conda activate <ympäristön nimi>' aktivoi ympäristön. Siellä voi ajaa 'python3 main.py' ja muuta kivaa sitten. 'conda deactivate' deaktivoi ympäristön.
+## Löytyy:
  - Kirjan esimerkki ja sitä mukaileva mallin alustus
  - yksittäinen tietokanta, joka sisältää vuosikatteet, väestörakenteet ja bkt:n
  - malleja voi luoda ja kouluttaa ja analysoida jos on paljon aikaa.
  - Päiväkirja pdf muodossa
-Kysymyksiä:
+## Kysymyksiä:
  - mitä dataa inputtiin?
     - ikärakenteen lisäksi esim. [työllisyys- ja työttömyysasteet alueittain](https://pxdata.stat.fi/PxWeb/pxweb/fi/StatFin/StatFin__tyokay/statfin_tyokay_pxt_115x.px/table/tableViewLayout1/)
     - [työssäkäynti alueittain (työpaikat alueella)](https://pxdata.stat.fi/PxWeb/pxweb/fi/StatFin/StatFin__tyokay/statfin_tyokay_pxt_115p.px/)
@@ -17,11 +19,13 @@ Kysymyksiä:
   -   alkuun tärkein **vuosikate**, mutta myös toimintakate voi olla mielenkiintoinen mallin arvioimiseksi
  - miten implementoida puuttuvat datat nolliksi? Tämän pitäisi tapahtua itsekseen, mutta pitää pitää silmällä, ettei kuiteinkin sotke juttuja
 
-TODO:
- - Monta tietokantaa -> yksi tietokanta. Sit niitä voi käsitellä
- - Aloittaa mallien testailu
-Huomioita:
+##TODO:
+ - Lisää testejä 
+ - lisää dataa
+##Huomioita:
  - vuosikatteiden yksikkö on 1000e tällä hetkellä. Tää ois hyvä skaalaa mallikohtaisesti johonkin järkevään missä tulokset esim välillä 0-100
  - Kaveri vinkkasi, että  bayesläisen tilastotieteen avuista voisi olla hyötyä meidän prokkiksessa. Hänen kirjasuositukset: 
    - Gelman et al. Bayesian Data Analysis (hieman eksaktimpi ja vähän raskaampi)
    - Kruschke: Doing Bayesian Data Analysis (nimikin kertoo jo että miten eroaa yo kirjasta :D) avaa helpommin käsitteitä ja painopiste soveltamisessa 
+
+J

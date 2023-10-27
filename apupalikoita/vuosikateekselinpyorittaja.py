@@ -1,23 +1,39 @@
 import pandas
 import sqlite3
 import os
+import csv 
+## Täällä kun kahtoo parametrit kohdilleen, niin saa lisättyä excel_into_dp.py ajamalla asioita master-tietokantaan. Ei pidä ajaa turhaan, tulee harmeja.
 
 def read_excel(name):
     dataframe = pandas.read_excel(os.path.realpath(f"talousdata/{name}.xlsx"))
     # print(dataframe.loc[2].to_numpy())
     # print(dataframe.info())
-    # print(dataframe[1:-3])
-    return dataframe[1:-3]
+    # print(dataframe[5:-35])
+    return dataframe[5:-35]
 
 def add_to_db(dataframe):
     db = sqlite3.connect("masterdb.db")
     db.isolation_level = None
-    db.execute("CREATE TABLE if not exists BKT (id INTEGER PRIMARY KEY, vuosi INTEGER,BKT INTEGER);")
-    for i in range(1,48):
+    kuntakoodit = municipality_codes()
+    for i in range(5,10820):
         data = dataframe.loc[i].to_numpy()
-        db.execute("INSERT INTO BKT (vuosi, BKT) values(?,?);", [data[0],data[1]])
-        
+        sql_query_insert = tuple(data[1:])
+        if type(data[0]) == str:
+            kunta = kuntakoodit[data[0]]
+            db.execute(f"CREATE Table if not exists Kuntaan_toihin_tulevat{kunta} (id INTEGER PRIMARY KEY, vuosi INTEGER, ToinenA INTEGER, AlinA INTEGER, YlempiA INTEGER, EiA INTEGER, ToinenB INTEGER, AlinB INTEGER, YlempiB INTEGER, EiB INTEGER, ToinenC INTEGER, AlinC INTEGER, YlempiC INTEGER, EiC INTEGER, ToinenD INTEGER, AlinD INTEGER, YlempiD INTEGER, EiD INTEGER, ToinenE INTEGER, AlinE INTEGER, YlempiE INTEGER, EiE INTEGER, ToinenF INTEGER, AlinF INTEGER, YlempiF INTEGER, EiF INTEGER);")
+        db.execute(f"INSERT INTO Kuntaan_toihin_tulevat{kunta} (vuosi, ToinenA, AlinA, YlempiA, EiA, ToinenB, AlinB, YlempiB, EiB, ToinenC, AlinC, YlempiC, EiC, ToinenD, AlinD, YlempiD, EiD, ToinenE, AlinE, YlempiE, EiE, ToinenF, AlinF, YlempiF, EiF) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);", sql_query_insert)
+    db.commit()
 
+def municipality_codes():
+    kuntakoodit = {}
+    with open("talousdata/kuntatunnukset.csv", mode='r',encoding='cp1250',newline='') as csv_file:
+        csv_read = csv.DictReader(csv_file,delimiter=";")
+        for row in csv_read:
+            if row["classificationItemName"]!='Vĺrdö':
+                kuntakoodit[row["classificationItemName"]]=row["code"][1:-1]
+            else:
+                kuntakoodit['Vårdö']=row["code"][1:-1]
+    return kuntakoodit
 # #aja ensiksi vain nämä. Tarkista taulukon koko ja rivien rakenne
 # print(dataframe.loc[2].to_numpy())
 # print(dataframe.info())

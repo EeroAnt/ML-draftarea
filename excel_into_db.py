@@ -1,3 +1,5 @@
 from apupalikoita import vuosikateekselinpyorittaja as op
 
-op.add_to_db(op.read_excel("suomilukuina_tau_kan002"))
+# op.add_to_db(op.read_excel("Asuinkunassa_tyoskentelevat"))
+
+op.add_to_db(op.read_excel("Alueelle_toihin_tulevat"))

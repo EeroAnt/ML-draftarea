@@ -1,0 +1,21 @@
+sql-kyselyjä muuttujiin talteen tai kommentteihin tms
+koulutukset serverille:
+ - erikokoisia verkkoja testiin
+ - mahdollisesti eri aktivaatiofunktioita (viimeisen pitää olla relu tai vastaava) leaky relu
+ - jotain kommervenkkejä? esim dropout
+lisää dataa? voi raivata (asiakkaalle) epäolennaisia muuttujia joko nyt tai myöhemminkin*
+
+
+
+ *mallin osalta epäolennaisten muuttujien osittaisderivaatat pitäisi olla pienet, joten toistaiseksi (imo) tarpeellisempaa löytää data ja verkko, jolla saadaan virhe pienemmäksi
+
+ pääpointti: --käsittääkseni-- niin kauan kun ei tule tuloksia niin joko data on puutteellista tai verkko on väärää mallia. tbh joka iteraatiolla opin lisää, miten vähän tiedän
+
+
+
+ pidemmän tähtäimen asioita:
+ - inputin derivaatta ulos (tästä suoraan arvokasta dataa asiakkaalle, ja helpottaa mahdollisesti karsimaan turhia muuttujia)
+ - verkkosivut
+
+
+kävellessä tuli joku ajatus, mistä en saa enää kiinni

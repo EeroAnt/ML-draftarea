@@ -32,9 +32,10 @@ The goal is to build a neural network regression model that utilizes public data
  - Lisää testejä 
  - lisää dataa
 ##Huomioita:
- - vuosikatteiden yksikkö on 1000e tällä hetkellä. Tää ois hyvä skaalaa mallikohtaisesti johonkin järkevään missä tulokset esim välillä 0-100
+ - vuosikatteiden yksikkö on 1000e tällä hetkellä*. Tää ois hyvä skaalaa mallikohtaisesti johonkin järkevään missä tulokset esim välillä 0-100
  - Kaveri vinkkasi, että  bayesläisen tilastotieteen avuista voisi olla hyötyä meidän prokkiksessa. Hänen kirjasuositukset: 
    - Gelman et al. Bayesian Data Analysis (hieman eksaktimpi ja vähän raskaampi)
    - Kruschke: Doing Bayesian Data Analysis (nimikin kertoo jo että miten eroaa yo kirjasta :D) avaa helpommin käsitteitä ja painopiste soveltamisessa 
 
-J
+
+*main.py sisältää tällä hetkellä rivin (kirjoitushetkellä rivi nro 9), joka skaalaa yksikön miljoonaksi euroksi. Tämä ei suorilta parantanut tuloksia, mutta ehkä silti wörttiä

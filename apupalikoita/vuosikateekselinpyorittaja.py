@@ -13,38 +13,9 @@ def read_excel(name):
 	# print(dataframe[5:-35])
 	return dataframe[5:-35]
 
-def add_to_db(dataframe):
+def insert_from_excel(dataframe):
 	db = sqlite3.connect("masterdb.db")
 	db.isolation_level = None
-	sql =(f"CREATE Table if not exists Pendeloivat ("+
-			"id INTEGER PRIMARY KEY,"+
-			"vuosi INTEGER,"+
-			"Toinen24 INTEGER,"+
-			"Toinen34 INTEGER,"+
-			"Toinen44 INTEGER,"+
-			"Toinen54 INTEGER,"+
-			"Toinen64 INTEGER,"+
-			"Toinen74 INTEGER,"+
-			"Alin24 INTEGER,"+
-			"Alin34 INTEGER,"+
-			"Alin44 INTEGER,"+
-			"Alin54 INTEGER,"+
-			"Alin64 INTEGER,"+
-			"Aline74 INTEGER,"+
-			"Ylempi24 INTEGER,"+
-			"Ylempi34 INTEGER,"+
-			"Ylempi44 INTEGER,"+
-			"Ylempi54 INTEGER,"+
-			"Ylempi64 INTEGER,"+
-			"Ylempi74 INTEGER,"+
-			"Ei24 INTEGER,"+
-			"Ei34 INTEGER,"+
-			"Ei44 INTEGER,"+
-			"Ei54 INTEGER,"+
-			"Ei64 INTEGER,"+
-			"Ei74 INTEGER,"+
-			"kunta_id);")
-	db.execute(sql)
 	kuntakoodit = municipality_codes()
 	for i in range(5,10820):
 		data = dataframe.loc[i].to_numpy()
@@ -93,7 +64,7 @@ def municipality_codes():
 				kuntakoodit['Vårdö']=row["code"][1:-1]
 	return kuntakoodit
 
-def remove_tables():
+def remove_numbered_tables():
 	db = sqlite3.connect("masterdb.db")
 	db.isolation_level = None
 	for i in range(999):
@@ -103,5 +74,97 @@ def remove_tables():
 			kunta ="0"+str(i)
 		else:
 			kunta =str(i)
-		db.execute(f"DROP TABLE if exists Kuntaan_toihin_tulevat{kunta};")
+		db.execute(f"DROP TABLE if exists vaestorakenne{kunta};")
 		db.commit()
+
+def add_table(name):
+	db = sqlite3.connect("masterdb.db")
+	db.isolation_level = None
+	sql =(f"CREATE Table if not exists {name} ("+
+			"id INTEGER PRIMARY KEY, "+
+			"vuosi, "+
+			"Nuoria_yhteensa, "+
+			"Tyovoima_nuoret, "+
+			"Tyolliset_nuoret, "+
+			"Alle_15, "+
+			"Opiskelijat_nuoret, "+
+			"Elake_nuoret, "+
+			"Aikuisia_yhteensa, "+
+			"Tyovoima_aikuiset, "+
+			"Tyolliset_aikuiset, "+
+			"Opiskelijat_aikuiset, "+
+			"Varusmiehet_aikuiset, "+
+			"Elake_aikuiset, "+
+			"Iakkaat_yhteensa, "+
+			"Tyovoima_iakkaat, "+
+			"Tyolliset_iakkaat, "+
+			"Opiskelijat_iakkaat, "+
+			"Elake_iakkaat, "+
+			"Kunta_id);")
+	db.execute(sql)
+
+def null_mapper(x):
+	if type(x) in [int, float, np.int64, np.float64, np.float32, np.float16] :
+		return x
+	else:
+		return '.'
+
+def insert_from_numbered_table():
+	db = sqlite3.connect("masterdb.db")
+	db.isolation_level = None
+	for i in range(1000):
+		if i<10:
+			kunta ="00"+str(i)
+		elif i<100:
+			kunta ="0"+str(i)
+		else:
+			kunta =str(i)
+		sql_check = (f"SELECT name FROM sqlite_master WHERE type='table' AND name='vaestorakenne{kunta}';")
+		if db.execute(sql_check).fetchall():
+			sql_get_data = (
+				"SELECT "+
+				"vuosi, "+
+				"NuoretYhteensa, "+
+				"TyovoimaN, "+
+				"TyollisetN, "+
+				"AlleViisitoista, "+
+				"OpiskelijatN, "+
+				"ElakelaisetN, "+
+				"Aikuiset, "+
+				"TyovoimaA, "+
+				"TyollisetA, "+
+				"OpiskelijatA, "+
+				"VarusmiehetA, "+
+				"ElakelaisetA, "+
+				"Iakkaat, "+
+				"TyovoimaI, "+
+				"TyollisetI, "+
+				"OpiskelijatI, "+
+				"ElakelaisetI "+
+				f"FROM vaestorakenne{kunta};")
+			data = db.execute(sql_get_data).fetchall()
+			for i in data:
+				data_to_insert = tuple(map(null_mapper,i))+(kunta,)
+				sql_query_insert = (f"INSERT INTO Vaestorakenne ("+
+						"vuosi, "+
+						"Nuoria_yhteensa, "+
+						"Tyovoima_nuoret, "+
+						"Tyolliset_nuoret, "+
+						"Alle_15, "+
+						"Opiskelijat_nuoret, "+
+						"Elake_nuoret, "+
+						"Aikuisia_yhteensa, "+
+						"Tyovoima_aikuiset, "+
+						"Tyolliset_aikuiset, "+
+						"Opiskelijat_aikuiset, "+
+						"Varusmiehet_aikuiset, "+
+						"Elake_aikuiset, "+
+						"Iakkaat_yhteensa, "+
+						"Tyovoima_iakkaat, "+
+						"Tyolliset_iakkaat, "+
+						"Opiskelijat_iakkaat, "+
+						"Elake_iakkaat, "+
+						"Kunta_id)"
+						f"values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);")
+				db.execute(sql_query_insert, data_to_insert)
+				db.commit()

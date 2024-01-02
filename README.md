@@ -17,12 +17,12 @@ The goal is to build a neural network regression model that utilizes public data
  - Päiväkirja pdf muodossa
 ## Kysymyksiä:
  - mitä dataa inputtiin?
-    - ikärakenteen lisäksi esim. [työllisyys- ja työttömyysasteet alueittain](https://pxdata.stat.fi/PxWeb/pxweb/fi/StatFin/StatFin__tyokay/statfin_tyokay_pxt_115x.px/table/tableViewLayout1/). Exceli ladattu
-    - [työssäkäynti alueittain (työpaikat alueella)](https://pxdata.stat.fi/PxWeb/pxweb/fi/StatFin/StatFin__tyokay/statfin_tyokay_pxt_115p.px/). Exceli ladattu, näytti sisältävän seuraavan bullet pointin toiveen
-    - alueen työlliset koulutustason mukaan tms. [samassa tilastossa](https://pxdata.stat.fi/PXWeb/pxweb/fi/StatFin/StatFin__tyokay/?tablelist=true)
-    - inputissa olisi hyvä mahdollistaa esim. -5 tai -3 vuoden lägi (esim. vuosien 2018-2020 väestörakenteet voivat kaikki olla merkittäviä inputteja vuoden 2021 mallissa). Tämä onnistuu kohtuu kevyesti ajoympäristössä. Syö vektoreita. Kolmen vuoden lagi vei vektorien määrän 6800 -> 4400. Pitää ihmetellä testailla ja pyöritellä, mikä tuottaa parhaimmat tulokset.
+	- ikärakenteen lisäksi esim. [työllisyys- ja työttömyysasteet alueittain](https://pxdata.stat.fi/PxWeb/pxweb/fi/StatFin/StatFin__tyokay/statfin_tyokay_pxt_115x.px/table/tableViewLayout1/). Exceli ladattu
+	- [työssäkäynti alueittain (työpaikat alueella)](https://pxdata.stat.fi/PxWeb/pxweb/fi/StatFin/StatFin__tyokay/statfin_tyokay_pxt_115p.px/). Exceli ladattu, näytti sisältävän seuraavan bullet pointin toiveen
+	- alueen työlliset koulutustason mukaan tms. [samassa tilastossa](https://pxdata.stat.fi/PXWeb/pxweb/fi/StatFin/StatFin__tyokay/?tablelist=true)
+	- inputissa olisi hyvä mahdollistaa esim. -5 tai -3 vuoden lägi (esim. vuosien 2018-2020 väestörakenteet voivat kaikki olla merkittäviä inputteja vuoden 2021 mallissa). Tämä onnistuu kohtuu kevyesti ajoympäristössä. Syö vektoreita. Kolmen vuoden lagi vei vektorien määrän 6800 -> 4400. Pitää ihmetellä testailla ja pyöritellä, mikä tuottaa parhaimmat tulokset.
  - mitä dataa outputtiin?
-    - alkuun tärkein **vuosikate**, mutta myös toimintakate voi olla mielenkiintoinen mallin arvioimiseksi
+	- alkuun tärkein **vuosikate**, mutta myös toimintakate voi olla mielenkiintoinen mallin arvioimiseksi
  - miten implementoida puuttuvat datat nolliksi? Tämän pitäisi tapahtua itsekseen, mutta pitää pitää silmällä, ettei kuiteinkin sotke juttuja
 
 ##TODO:

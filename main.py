@@ -45,7 +45,7 @@ num_epochs = 1000
 all_mae_histories = []
 
 for i in range(k):
-    print('prosessing fold #', i)
+    print('prosessing fold #', i+1)
     val_data = train_data[i * num_val_samples: (i + 1) * num_val_samples]
     val_targets = train_targets[i * num_val_samples: (i + 1) * num_val_samples]
     val_data = np.array(val_data)

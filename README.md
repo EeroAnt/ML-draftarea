@@ -3,10 +3,13 @@
 
 The goal is to build a neural network regression model that utilizes public data from Tilastokeskus to predict financial outcomes, specifically focusing on variables such as population demographics and employment statistics. This project aims to provide a valuable tool for financial decision-making, offering insights based on the analysis of relevant socioeconomic factors. By leveraging the power of neural networks, we seek to enhance the accuracy and effectiveness of our regression model, ultimately assisting users in making informed and data-driven financial decisions.
 
+# HUOM
+ ### Tietokantarakenne on laitettu uusiksi, joten kaikki ajot pitää kirjoittaa myös uusiksi.
+ Aiemmin joka kunnalla oli muutama taulu, yhdessä väestörakenne, toisessa vuosikate, kolmanessa ja neljännessä työssäkäymishommia. Nyt on 5 taulua, joissa myös 'kunta_id' sarake, kun on tarpeen. Toivottavasti auttaa
 
 ## Viimeisimpiä muutoksia:
  - Välilyönnit vaihdettu tabeihin sisennyksiin
- - Tietokantoja siistitty: asuinalueella työssäkäyvät ja muualle pendelöivät siirretty yksiin tauluihin, joissa kuntatunnus on sarakkeena. Vastaava muutos suunnitteilla myös muille datoille.
+ - Tietokantoja siistitty. Aiemmin n 700 taulua, nyt 5
 
 ## Ajo-ohjeet
 [Miniconda3](https://docs.conda.io/projects/miniconda/en/latest/) tulee asentaa. Minun tarvitsi myös ajaa 'conda init bash' komento, jotta conda osasi toimittaa asioita. Sen jälkeen juurihakemistossa voi ajaa komennon 'conda create --name <ympäristön nimi> --file requirements.txt' jonka jälkeen 'conda activate <ympäristön nimi>' aktivoi ympäristön. Siellä voi ajaa 'python3 main.py' ja muuta kivaa sitten. 'conda deactivate' deaktivoi ympäristön.

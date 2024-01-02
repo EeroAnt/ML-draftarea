@@ -28,10 +28,16 @@ The goal is to build a neural network regression model that utilizes public data
 	- alkuun tärkein **vuosikate**, mutta myös toimintakate voi olla mielenkiintoinen mallin arvioimiseksi
  - miten implementoida puuttuvat datat nolliksi? Tämän pitäisi tapahtua itsekseen, mutta pitää pitää silmällä, ettei kuiteinkin sotke juttuja
 
-##TODO:
+## Tietokannasta:
+ - Taulukot "Asuinkunnassa" ja "Pendelöivät" sisältävät ikäluokittain ja koulutusasteittain kunnassa asuvat henkilöt, jotka käyvät asuinkunnassaan töissä tai matkustavat muualle töihin. Esim sarake Toinen24 viittaa toisen asteen koulutukseen omaaviin 17-24 vuotiaisiin ja Ei34 25-34-vuotiaisiin ilman korkeampaa koulutusta. Alle 17- ja yli 74-vuotiaat jäivät näistä tauluista (ainakin toistaiseksi) pois.
+ - Vaestorakenne jakaa ikäluokat nuoriin (alle 18), aikuisiin (18-64) ja iäkkäisiin (65+) ja jakaa niiden sisällä vielä muutamaan eri kategoriaan.
+ - Vuosikate sisältää tällä hetkellä vuosikatteen ja toimintakatteen. Jälkimmäinen on vaihtelevasti saatavilla
+ - BKT on ainoa, joka ei sisällä kuntatunnusta
+
+## TODO:
  - Lisää testejä 
  - lisää dataa
-##Huomioita:
+## Huomioita:
  - vuosikatteiden yksikkö on 1000e tällä hetkellä*. Tää ois hyvä skaalaa mallikohtaisesti johonkin järkevään missä tulokset esim välillä 0-100
  - Kaveri vinkkasi, että  bayesläisen tilastotieteen avuista voisi olla hyötyä meidän prokkiksessa. Hänen kirjasuositukset: 
    - Gelman et al. Bayesian Data Analysis (hieman eksaktimpi ja vähän raskaampi)

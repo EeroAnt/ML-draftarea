@@ -29,8 +29,11 @@ def get_data():
             input_data.append(i[:-1])
         dt=np.dtype('int')
         input_data = np.asarray(input_data,dtype=dt)
+        output_data = np.asarray(output_data)
         return (input_data, output_data)
 
+
+#Tähän huomiona, että kun rupee löytymään käytettävää mallia, niin tarvitaan myös muuttujat mean ja std talteen käyttöä varten
 def normalize(data):
     mean = data.mean(axis=0)
     data = data - mean

@@ -6,6 +6,8 @@ import time
 start = time.time()
 (train_data,train_targets) = data_prep.prep_data()
 
+train_targets = train_targets/1000
+
 k = 4
 num_val_samples = len(train_data) // 4
 num_epochs = 100
@@ -74,9 +76,11 @@ average_mae_history = [
 finish = time.time()
 
 print(f"Koulutukseen kului {finish-start} sekuntia")
-print(f"Tulosteiden keskiarvo on {sum(train_targets)/len(train_targets)}")
+print(f"Tulosteiden keskiarvo on {sum(train_targets*1000)/len(train_targets)}")
 import matplotlib.pyplot as plt
 
+average_mae_history = np.asarray(average_mae_history)
+average_mae_history = average_mae_history * 1000
 plt.plot(range(1, len(average_mae_history) + 1), average_mae_history)
 plt.xlabel('Epochs')
 plt.ylabel('Validation MAE')

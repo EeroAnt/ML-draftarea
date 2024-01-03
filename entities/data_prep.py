@@ -57,9 +57,9 @@ def prep_data():
 	return data, train_targets
 
 
-# Hiukan raskas rakenne, sisältää copypastea. Pyörittelin db browserissa toimivaksi ja sitten kopsasin tänne.
+# Ja sitten hiukan sql:ää.
 # Tehdään väliaikainen taulu, jossa on kaikki tarvittavat tiedot. Tämän jälkeen poistetaan turhat sarakkeet ja
-# palautetaan taulu. Aloitetaan poistamalla vanha taulu, jos sellainen on olemassa.
+# palautetaan taulu. Aloitetaan poistamalla vanha taulu, jos sellainen on olemassa. Tässä varmasti optimoitavaa. Sitten joskus (tm)
 def queries_for_two_years_of_data_and_three_next_for_targets(kunta_id):
 	
 	sql1 = "DROP TABLE IF EXISTS TEMP_TABLE;"

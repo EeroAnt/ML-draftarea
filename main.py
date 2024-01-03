@@ -5,38 +5,38 @@ import time
 
 start = time.time()
 (train_data,train_targets) = data_prep.prep_data()
-
+print(np.average(train_targets))
 # train_targets = train_targets/1000
 
-k = 4
-num_val_samples = len(train_data) // 4
-num_epochs = 100
-all_scores = []
+# k = 4
+# num_val_samples = len(train_data) // 4
+# num_epochs = 100
+# all_scores = []
 
-for i in range(k):
-	print('prosessing fold #', i+1)
-	val_data = train_data[i * num_val_samples: (i + 1) * num_val_samples]
-	val_targets = train_targets[i * num_val_samples: (i + 1) * num_val_samples]
-	val_data = np.array(val_data)
-	val_targets = np.array(val_targets)
+# for i in range(k):
+# 	print('prosessing fold #', i+1)
+# 	val_data = train_data[i * num_val_samples: (i + 1) * num_val_samples]
+# 	val_targets = train_targets[i * num_val_samples: (i + 1) * num_val_samples]
+# 	val_data = np.array(val_data)
+# 	val_targets = np.array(val_targets)
 
-	partial_train_data = np.concatenate(
-		[train_data[:i * num_val_samples],
-		train_data[(i + 1) * num_val_samples:]],
-		axis=0)
-	partial_train_targets = np.concatenate(
-		[train_targets[:i * num_val_samples],
-		train_targets[(i + 1) * num_val_samples:]],
-		axis=0)
+# 	partial_train_data = np.concatenate(
+# 		[train_data[:i * num_val_samples],
+# 		train_data[(i + 1) * num_val_samples:]],
+# 		axis=0)
+# 	partial_train_targets = np.concatenate(
+# 		[train_targets[:i * num_val_samples],
+# 		train_targets[(i + 1) * num_val_samples:]],
+# 		axis=0)
 
-	model = m.build_model(train_data)
-	model.fit(partial_train_data, partial_train_targets,
-			 epochs=num_epochs, batch_size=1, verbose=0)
-	val_mse, val_mae = model.evaluate(val_data,val_targets,verbose=0)
-	all_scores.append(val_mae)
+# 	model = m.build_model(train_data)
+# 	model.fit(partial_train_data, partial_train_targets,
+# 			 epochs=num_epochs, batch_size=1, verbose=0)
+# 	val_mse, val_mae = model.evaluate(val_data,val_targets,verbose=0)
+# 	all_scores.append(val_mae)
 
-print(all_scores)
-print(np.mean(all_scores))
+# print(all_scores)
+# print(np.mean(all_scores))
 
 
 # # tutkitaan epochien määrän merkitystä ja etsitään overfittauksen alkamista:

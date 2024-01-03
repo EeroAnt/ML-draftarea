@@ -37,6 +37,7 @@ The goal is to build a neural network regression model that utilizes public data
 ## TODO:
  - Lisää testejä 
  - lisää dataa
+ - refaktorointia? Mie helposti kirjotan monoliittia.. Tuli mieleen, että testit voisi eriyttää mainista omiin tiedostoihinsa ja sitten mainista vaan ajaa sen mitä tekee mieli.. 
 ## Huomioita:
  - vuosikatteiden yksikkö on 1000e tällä hetkellä*. Tää ois hyvä skaalaa mallikohtaisesti johonkin järkevään missä tulokset esim välillä 0-100
  - Kaveri vinkkasi, että  bayesläisen tilastotieteen avuista voisi olla hyötyä meidän prokkiksessa. Hänen kirjasuositukset: 
@@ -44,4 +45,4 @@ The goal is to build a neural network regression model that utilizes public data
    - Kruschke: Doing Bayesian Data Analysis (nimikin kertoo jo että miten eroaa yo kirjasta :D) avaa helpommin käsitteitä ja painopiste soveltamisessa 
 
 
-*main.py sisältää tällä hetkellä rivin (kirjoitushetkellä rivi nro 9), joka skaalaa yksikön miljoonaksi euroksi. Tämä ei suorilta parantanut tuloksia, mutta ehkä silti wörttiä
+*main.py sisältää tällä hetkellä rivin (viime tarkistuksella rivi nro 12), joka skaalaa yksikön miljoonaksi euroksi. Tämä ei suorilta parantanut tuloksia, mutta ehkä silti wörttiä

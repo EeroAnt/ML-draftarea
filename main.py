@@ -3,6 +3,9 @@ import numpy as np
 import entities.data_prep as data_prep
 import time
 
+### TÄMÄ OSA KUULUU JOKA TESTIIN
+## Siinä alustetaan data foldeihin sopiviksi
+
 start = time.time()
 (train_data,train_targets) = data_prep.prep_data()
 print(np.average(train_targets))
@@ -10,6 +13,10 @@ print(np.average(train_targets))
 
 # k = 4
 # num_val_samples = len(train_data) // 4
+
+
+## Tästä alkaa 'kevyt' testi, jossa vain 100 epochia. Sillä voi testata lokaalistikin, että homma pelittää
+
 # num_epochs = 100
 # all_scores = []
 
@@ -38,7 +45,7 @@ print(np.average(train_targets))
 # print(all_scores)
 # print(np.mean(all_scores))
 
-
+### Isompi, 1000 epochin testi, tulosteiden kanssa
 # # tutkitaan epochien määrän merkitystä ja etsitään overfittauksen alkamista:
 
 # num_epochs = 1000

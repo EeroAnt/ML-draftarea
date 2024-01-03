@@ -7,20 +7,20 @@ def get_data():
 	data= []
 	output_data = []
 	input_data = []
-	sql_for_municipaliti_ids = "SELECT kunta_id FROM Asukasluku WHERE Asukasluvun_ka < 15000"
-	municipality_ids = db.execute(sql_for_municipaliti_ids).fetchall()
+	municipality_ids = get_wanted_municipality_ids()
 	for i in municipality_ids:
 		kunta_id = "'"+i[0]+"'"
 		sql1, sql2, sql3, sql4 = queries_for_two_years_of_data_and_three_next_for_targets(kunta_id)
-		db.execute(sql4)
-		db.commit()
 		db.execute(sql1)
 		db.commit()
-		for i in sql2:
+		db.execute(sql2)
+		db.commit()
+		for i in sql3:
 			db.execute(i)
 		db.commit()
-		result =db.execute(sql3).fetchall()
+		result =db.execute(sql4).fetchall()
 		db.commit()
+		# suodatan pois ne rivit, joissa on None-arvoja, toistaiseksi rikkovat mallin. Ekalla testillä niitä oli ~ 4 / 3000
 		result = list(filter(lambda x: x.count(None) == 0, result))
 		for i in result:
 			data.append(i)
@@ -32,6 +32,14 @@ def get_data():
 	input_data = np.asarray(input_data,dtype=dt)
 	output_data = np.asarray(output_data)
 	return (input_data, output_data)
+
+
+#Tätä voi varmasti laajentaa esim tekemään halutut rajaukset parametrien avulla
+def get_wanted_municipality_ids():
+	db = sqlite3.connect("masterdb.db")
+	sql = "SELECT kunta_id FROM Asukasluku WHERE Asukasluvun_ka < 15000"
+	municipality_ids = db.execute(sql).fetchall()
+	return municipality_ids
 
 
 #Tähän huomiona, että kun rupee löytymään käytettävää mallia, niin tarvitaan myös muuttujat mean ja std talteen käyttöä varten
@@ -48,8 +56,15 @@ def prep_data():
 	data = normalize(train_data)
 	return data, train_targets
 
+
+# Hiukan raskas rakenne, sisältää copypastea. Pyörittelin db browserissa toimivaksi ja sitten kopsasin tänne.
+# Tehdään väliaikainen taulu, jossa on kaikki tarvittavat tiedot. Tämän jälkeen poistetaan turhat sarakkeet ja
+# palautetaan taulu. Aloitetaan poistamalla vanha taulu, jos sellainen on olemassa.
 def queries_for_two_years_of_data_and_three_next_for_targets(kunta_id):
-	sql1 = ("CREATE TABLE TEMP_TABLE AS SELECT * FROM (SELECT "+
+	
+	sql1 = "DROP TABLE IF EXISTS TEMP_TABLE;"
+	
+	sql2 = ("CREATE TABLE TEMP_TABLE AS SELECT * FROM (SELECT "+
 			"t1.vuosi AS vuosi, t1.Toinen24, t1.Toinen34, t1.Toinen44, t1.Toinen54, t1.Toinen64, t1.Toinen74, "+
 			"t1.Alin24, t1.Alin34, t1.Alin44, t1.Alin54, t1.Alin64, t1.Alin74, "+
 			"t1.Ylempi24, t1.Ylempi34, t1.Ylempi44, t1.Ylempi54, t1.Ylempi64, t1.Ylempi74, "+
@@ -116,7 +131,8 @@ def queries_for_two_years_of_data_and_three_next_for_targets(kunta_id):
 			"LEFT JOIN Vuosikate E "+
 			"ON A.vuosi = E.vuosi-4 "+
 			f"WHERE D.kunta_id = {kunta_id} AND E.kunta_id={kunta_id} AND E.vuosi is not NULL;")
-	sql2 = ["ALTER TABLE TEMP_TABLE DROP COLUMN vuosi;",
+	
+	sql3 = ["ALTER TABLE TEMP_TABLE DROP COLUMN vuosi;",
 			"ALTER TABLE TEMP_TABLE DROP COLUMN 'vuosi:1';",
 			"ALTER TABLE TEMP_TABLE DROP COLUMN 'vuosi:2';",
 			"ALTER TABLE TEMP_TABLE DROP COLUMN 'vuosi:3';",
@@ -127,7 +143,8 @@ def queries_for_two_years_of_data_and_three_next_for_targets(kunta_id):
 			"ALTER TABLE TEMP_TABLE DROP COLUMN 'toimintakate:1';",
 			"ALTER TABLE TEMP_TABLE DROP COLUMN kunta_id;",
 			"ALTER TABLE TEMP_TABLE DROP COLUMN 'kunta_id:1';"]
-	sql3 = "SELECT * FROM TEMP_TABLE"
-	sql4 = "DROP TABLE IF EXISTS TEMP_TABLE;"
+	
+	sql4 = "SELECT * FROM TEMP_TABLE"
+	
 	return sql1, sql2, sql3, sql4
 	

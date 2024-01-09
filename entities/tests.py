@@ -46,7 +46,7 @@ def test_with_plots(num_epochs, k):
 							epochs=num_epochs, batch_size=1, verbose=0)
 		mae_history = history.history['val_mae']
 		all_mae_histories.append(mae_history)
-		print(f"Epoch {i+1} done. Time elapsed: {time.time()-start} seconds")
+		print(f"Fold {i+1} done. Time elapsed: {time.time()-start} seconds")
 
 	# jokaisen epochin keskiarvot
 	average_mae_history = [

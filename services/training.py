@@ -1,11 +1,11 @@
 import numpy as np
-from entities.models import model as m
 import time
-from entities.data_prep import prep_data
-from apupalikoita.data_mapper import map_norm_from_vector
+from entities.models import model as m
+from services.data_prep import prep_data
+from apupalikoita.mapping import elementwise_error_approximation
 from apupalikoita.time_formatting import time_formatter
 
-def test_with_plots(num_epochs, k):
+def test_with_plots(num_epochs:int, k:int, network_structure:list):
 	## Isompi, 1000 epochin testi, tulosteiden kanssa
 	# tutkitaan epochien määrän merkitystä ja etsitään overfittauksen alkamista:
 
@@ -14,12 +14,16 @@ def test_with_plots(num_epochs, k):
 	(train_data,train_targets) = prep_data()
 
 	all_mae_histories = []
+	all_elementwise_error_approximations = []
 	num_val_samples = len(train_data) // k
-	average_norm_of_train_targets = np.average(list(map(map_norm_from_vector,train_targets)))
+
+	average_norm_of_train_targets = np.average(list(map(np.linalg.norm,train_targets)))
+	average_value_of_vector_element = np.average(list(map(np.average,train_targets)))
 
 	print("-------------------")
 	print(f"Data prepped. Time elapsed: {time_formatter(time.time()-start)}")
-	print(f"Average norm of train targets: {average_norm_of_train_targets}")
+	print(f"Average norm of train targets: {'{:.2f}'.format(average_norm_of_train_targets)}")
+	print(f"Average value of train target elements: {'{:.2f}'.format(average_value_of_vector_element)}")
 	temp_time = time.time()
 	
 	for i in range(k):
@@ -39,13 +43,19 @@ def test_with_plots(num_epochs, k):
 			train_targets[(i + 1) * num_val_samples:]],
 			axis=0)
 
-		model = m.build_model(train_data)
+		model = m.build_model(train_data, network_structure)
 		history = model.fit(partial_train_data, partial_train_targets,
 							validation_data=(val_data, val_targets),
 							epochs=num_epochs, batch_size=1, verbose=0)
 		mae_history = history.history['val_mae']
+		
 		all_mae_histories.append(mae_history)
+		elementwise_error_approximations = [[x, len(train_targets[0])] for x in mae_history]
+		all_elementwise_error_approximations.append(list(map(elementwise_error_approximation,elementwise_error_approximations)))
+		
 		print(f"Fold {i+1} done. Time elapsed: {time_formatter(time.time()-temp_time)}")
+		print(f"MAE : {'{:.2f}'.format(np.average(mae_history))}")
+		print(f"Elementwise error approximation : {'{:.2f}'.format(np.average(all_elementwise_error_approximations[-1]))}")
 		temp_time = time.time()
 	
 	# jokaisen epochin keskiarvot

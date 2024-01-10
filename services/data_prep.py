@@ -1,6 +1,6 @@
 import numpy as np
 import random
-from entities.data_fetching import *
+from services.data_fetching import *
 
 
 def get_data():

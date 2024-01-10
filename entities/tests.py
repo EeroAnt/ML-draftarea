@@ -13,8 +13,6 @@ def test_with_plots(num_epochs, k):
 
 	(train_data,train_targets) = prep_data()
 
-
-
 	all_mae_histories = []
 	num_val_samples = len(train_data) // k
 	average_norm_of_train_targets = np.average(list(map(map_norm_from_vector,train_targets)))

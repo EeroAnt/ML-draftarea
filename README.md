@@ -1,7 +1,7 @@
 # ML-draftarea
 ## About
 
-The goal is to build a neural network regression model that utilizes public data from Tilastokeskus to predict financial outcomes, specifically focusing on variables such as population demographics and employment statistics. This project aims to provide a valuable tool for financial decision-making, offering insights based on the analysis of relevant socioeconomic factors. By leveraging the power of neural networks, we seek to enhance the accuracy and effectiveness of our regression model, ultimately assisting users in making informed and data-driven financial decisions.
+The goal is to build a neural network regression model that utilizes public data from Tilastokeskus to predict financial outcomes, specifically focusing on variables such as population demographics and employment statistics. This project aims to provide a valuable tool for financial decision-making, offering insights based on the analysis of relevant socioeconomic factors. By leveraging the power of neural networks, we seek to enhance the accuracy and effectiveness of our regression model, ultimately assisting users in making informed and data-driven financial decisions. Due to my erratic preferences, the code swaps between finnish and english. The documentation is mostly in finnish.
 
 
 ## Viimeisimpiä muutoksia:
@@ -9,6 +9,15 @@ The goal is to build a neural network regression model that utilizes public data
 
 ## Ajo-ohjeet
 [Miniconda3](https://docs.conda.io/projects/miniconda/en/latest/) tulee asentaa. Minun tarvitsi myös ajaa 'conda init bash' komento, jotta conda osasi toimittaa asioita. Sen jälkeen juurihakemistossa voi ajaa komennon 'conda create --name <ympäristön nimi> --file requirements.txt' jonka jälkeen 'conda activate <ympäristön nimi>' aktivoi ympäristön. Siellä voi ajaa 'python3 main.py' ja muuta kivaa sitten. 'conda deactivate' deaktivoi ympäristön.
+
+# python3 main.py
+
+Tällä hetkellä siellä on funktio, joka alustaa datan (valitsee kunnat joilla keskimäärin alle 15k asukasta. 2 vuotta opetusdataa, 3 vuotta vuosikatteita tulosteena (tämänkin määrittelyn voisi siirtää funktion parametreihin jossain vaiheessa)), alustaa mallin, kouluttaa mallin k-fold validaatiolla ja tulostaa käyrät MAE:n kehityksestä epookkien välillä. Ensimmäinen käyrä on raaka ja toinen siistitty. Siistitty versio leikkaa ensimmäiset 10 epookkia pois, joten alle 10 epookin koulutuksilla sitä ei ilmene.
+
+Parametreiksi funktio syö epookkien määrän (kokonaisluku >0), foldien määrän (kokonaisluku >1) ja verkon rakenteen (lista viimeistä alkiota lukuunottamatta iteroitavia.)
+
+Verkon rakenteesta: Malli automaattisesti sovittaa ensimmäisen kerroksen syötteen kanssa yhteensopivaksi, joten verkon rakenteen (lista) alkio on ensimmäinen 'keskikerros'. Tämän listan alkiot ovat viimeistä lukuunottamatta muotoa (solmujen määrä:kokonaisluku, aktivaatiofunktio:merkkijono). Viimeiseen kerrokseen ei tule aktivaatiofunktiota joten listan viimeinen alkio on pelkkä positiivinen kokonaisluku, joka määrittää tulosteen dimension. On kannattavaa asettaa dimensio samaksi mallissa, kuin datassa. 
+
 ## Löytyy:
  - Kirjan esimerkki ja sitä mukaileva mallin alustus
  - yksittäinen tietokanta, joka sisältää vuosikatteet, väestörakenteet ja bkt:n

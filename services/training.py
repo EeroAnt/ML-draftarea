@@ -22,6 +22,7 @@ def test_with_plots(num_epochs:int, k:int, network_structure:list):
 
 	print("-------------------")
 	print(f"Data prepped. Time elapsed: {time_formatter(time.time()-start)}")
+	print(f"Amount of vectors in train data: {len(train_data)}")
 	print(f"Average norm of train targets: {'{:.2f}'.format(average_norm_of_train_targets)}")
 	print(f"Average value of train target elements: {'{:.2f}'.format(average_value_of_vector_element)}")
 	temp_time = time.time()

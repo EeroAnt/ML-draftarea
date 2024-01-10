@@ -18,6 +18,10 @@ def fetch_data(kunta_id):
 	result = list(filter(lambda x: x.count(None) == 0, result))
 	for i in result:
 		data.append(i)
+	# Duplikaatti. Toistaiseksi, koska kelasin että varuilta on hyvä pitää alussa tämmöinen, jotta ei tule kolareita, 
+	# mutta haluan loppuunkin, jotta itse tietokantaan ei jää mitään ylimääräistä jokaisen testin jälkeen
+	db.execute(drop_temp_table)
+	db.commit()
 	return data
 
 

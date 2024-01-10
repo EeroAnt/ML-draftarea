@@ -3,6 +3,7 @@ from entities.models import model as m
 import time
 from entities.data_prep import prep_data
 from apupalikoita.data_mapper import map_norm_from_vector
+from apupalikoita.time_formatting import time_formatter
 
 def test_with_plots(num_epochs, k):
 	## Isompi, 1000 epochin testi, tulosteiden kanssa
@@ -19,9 +20,9 @@ def test_with_plots(num_epochs, k):
 	average_norm_of_train_targets = np.average(list(map(map_norm_from_vector,train_targets)))
 
 	print("-------------------")
-	print(f"Data prepped. Time elapsed: {time.time()-start} seconds")
+	print(f"Data prepped. Time elapsed: {time_formatter(time.time()-start)}")
 	print(f"Average norm of train targets: {average_norm_of_train_targets}")
-	
+	temp_time = time.time()
 	
 	for i in range(k):
 		print("-------------------")
@@ -46,15 +47,16 @@ def test_with_plots(num_epochs, k):
 							epochs=num_epochs, batch_size=1, verbose=0)
 		mae_history = history.history['val_mae']
 		all_mae_histories.append(mae_history)
-		print(f"Fold {i+1} done. Time elapsed: {time.time()-start} seconds")
-
+		print(f"Fold {i+1} done. Time elapsed: {time_formatter(time.time()-temp_time)}")
+		temp_time = time.time()
+	
 	# jokaisen epochin keskiarvot
 	average_mae_history = [
 		np.mean([x[i] for x in all_mae_histories]) for i in range(num_epochs)]
 
 	finish = time.time()
 	print("-------------------")
-	print(f"Koulutukseen kului {finish-start} sekuntia")
+	print(f"Full time of the test: {time_formatter(finish-start)}")
 
 	# plottausta
 	import matplotlib.pyplot as plt

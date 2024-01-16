@@ -1,7 +1,7 @@
 # ML-draftarea
 ## About
 
-The goal is to build a neural network regression model that utilizes public data from Tilastokeskus to predict financial outcomes, specifically focusing on variables such as population demographics and employment statistics. This project aims to provide a valuable tool for financial decision-making, offering insights based on the analysis of relevant socioeconomic factors. By leveraging the power of neural networks, we seek to enhance the accuracy and effectiveness of our regression model, ultimately assisting users in making informed and data-driven financial decisions. Due to my erratic preferences, the code swaps between finnish and english. The documentation is mostly in finnish.
+The goal is to build a neural network regression model that utilizes public data from Tilastokeskus to predict financial outcomes, specifically focusing on variables such as population demographics and employment statistics. This project aims to provide a valuable tool for financial decision-making, offering insights based on the analysis of relevant socioeconomic factors. By leveraging the power of neural networks, we seek to enhance the accuracy and effectiveness of our regression model, ultimately assisting users in making informed and data-driven financial decisions. The documentation is mostly in finnish.
 
 
 ## Viimeisimpiä muutoksia:
